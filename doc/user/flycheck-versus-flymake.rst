@@ -8,24 +8,15 @@ This article provides information about Flycheck compares to the *built-in*
 Flymake mode.  It does not consider third-party extensions such as flymake-easy_
 or flymake-cursor_, but references them at appropriate places.
 
-We aim for this comparison to be neutral and complete, but do not provide any
-guarantee for completeness or correctness of the following information.
-Moreover, we consider Flycheck superior to Flymake in all aspects.  As such, you
-may find this page biased towards Flycheck.  Please excuse this as well as any
-factual mistake or lack of information.  Please suggest improvements.
+We aim for this comparison to be fair and comprehensive, but it may contain
+stale information.  Please report any incorrectness and any inconsistency you
+find, and feel free to `edit this page`_ and improve it.
 
 .. important::
 
-   This comparison was written around the time Emacs 24.5 was released, and only
-   updated infrequently since then.  Flycheck has changed and hopefully improved
-   meanwhile, and Flymake may have done so as well.  As such parts of this
-   article may be outdated and have become incorrect by now.  Likewise
-   screenshots that show particular behaviour of Flycheck or Flymake have aged;
-   the corresponding features of Flycheck and Flymake may look different now, or
-   have gone altogether.
-
-   Please report any incorrectness and any inconsistency you find, and feel free
-   to `edit this page`_ and improve it.
+   This comparison was updated at the time of the Emacs 26.1 release, which
+   contains an overhaul of Flymake.  If you are using Emacs 25.3 or below, you
+   can still access the comparison with the previous versions of Flymake here.
 
 .. _flymake-easy: https://github.com/purcell/flymake-easy
 .. _flymake-cursor: https://www.emacswiki.org/emacs/flymake-cursor.el
@@ -44,71 +35,70 @@ Please do **not** use this table alone to make your personal judgment.  Read the
 detailed review in the following sections, too, at least with regards to the
 features you are interested in.
 
-+-----------------------+-----------------------+-----------------------+
-|                       |Flycheck               |Flymake                |
-+=======================+=======================+=======================+
-|Supports Emacs versions||min-emacs|            |22+                    |
-+-----------------------+-----------------------+-----------------------+
-|Built-in               |no [#]_                |yes                    |
-+-----------------------+-----------------------+-----------------------+
-|Enables automatically  |yes                    |no                     |
-|if possible            |                       |                       |
-+-----------------------+-----------------------+-----------------------+
-|Checks after           |save, newline, change  |newline, change        |
-+-----------------------+-----------------------+-----------------------+
-|Checks in background   |yes                    |yes                    |
-+-----------------------+-----------------------+-----------------------+
-|Automatic syntax       |By major mode and      |By file name patterns  |
-|checker selection      |custom predicates      |[#]_                   |
-+-----------------------+-----------------------+-----------------------+
-|Manual syntax checker  |yes                    |**no**                 |
-|selection              |                       |                       |
-+-----------------------+-----------------------+-----------------------+
-|Multiple syntax        |yes                    |**no** [#]_            |
-|checkers per buffer    |                       |                       |
-+-----------------------+-----------------------+-----------------------+
-|Supported languages    |>40                    |~5 [#]_                |
-+-----------------------+-----------------------+-----------------------+
-|Checking remote files  |said to work, but not  |partly?                |
-|via Tramp              |officially supported   |                       |
-|                       |[#]_                   |                       |
-+-----------------------+-----------------------+-----------------------+
-|Definition of new      |Single declarative     |Function definition and|
-|syntax checkers        |function/macro         |various variables [#]_ |
-+-----------------------+-----------------------+-----------------------+
-|Functions as syntax    |yes                    |**no** [#]_            |
-|checkers               |                       |                       |
-+-----------------------+-----------------------+-----------------------+
-|Error levels           |errors, warnings,      |errors, warnings       |
-|                       |informational, custom  |                       |
-|                       |levels                 |                       |
-+-----------------------+-----------------------+-----------------------+
-|Error identifiers      |yes                    |no                     |
-+-----------------------+-----------------------+-----------------------+
-|Error parsing          |Regular expressions,   |Regular expressions    |
-|                       |custom parsers for     |                       |
-|                       |structured formats     |                       |
-|                       |(XML, JSON, etc.)      |                       |
-+-----------------------+-----------------------+-----------------------+
-|Multiline error        |yes                    |**no**                 |
-|messages               |                       |                       |
-+-----------------------+-----------------------+-----------------------+
-|Error highlighting in  |yes                    |yes                    |
-|buffers                |                       |                       |
-+-----------------------+-----------------------+-----------------------+
-|Fringe icons for errors|yes                    |yes (Emacs 24.1+)      |
-+-----------------------+-----------------------+-----------------------+
-|Error message display  |Tooltip, echo area,    |Tooltip only [#]_      |
-|                       |fully customizable     |                       |
-+-----------------------+-----------------------+-----------------------+
-|List of all errors     |yes                    |**no**                 |
-+-----------------------+-----------------------+-----------------------+
-|Resource consumption   |low                    |**high**               |
-+-----------------------+-----------------------+-----------------------+
-|Unit tests             |all syntax checkers,   |**none?**              |
-|                       |large parts of         |                       |
-|                       |internals              |                       |
-+-----------------------+-----------------------+-----------------------+
+.. first column should be link to the relevant section
+
++---------------------------+-----------------------+-----------------------+
+|                           |Flycheck               |Flymake                |
++===========================+=======================+=======================+
+|Supports Emacs versions    ||min-emacs|            |22+                    |
++---------------------------+-----------------------+-----------------------+
+|Built-in                   |no [#]_                |yes                    |
++---------------------------+-----------------------+-----------------------+
+|`Enables automatically if  |yes                    |no                     |
+|possible <Enabling Syntax  |                       |                       |
+|Checking_>`_               |                       |                       |
++---------------------------+-----------------------+-----------------------+
+|Checks after               |save, newline, change  |newline, change        |
++---------------------------+-----------------------+-----------------------+
+|Checks in background       |yes                    |yes                    |
++---------------------------+-----------------------+-----------------------+
+|`Automatic syntax checker  |By major mode and      |By file name patterns  |
+|selection <Syntax checker  |custom predicates      |[#]_                   |
+|selection_>`_              |                       |                       |
++---------------------------+-----------------------+-----------------------+
+|`Manual syntax checker     |yes                    |no                     |
+|selection <Manual          |                       |                       |
+|Selection_>`_              |                       |                       |
++---------------------------+-----------------------+-----------------------+
+|`Multiple syntax checkers  |yes                    |yes                    |
+|per buffer`_               |                       |                       |
++---------------------------+-----------------------+-----------------------+
+|`Supported languages`_     |>50                    |2 [#]_                 |
+|                           |                       |                       |
++---------------------------+-----------------------+-----------------------+
+|Checking remote files      |said to work, but not  |partly?                |
+|via Tramp                  |officially supported   |                       |
+|                           |[#]_                   |                       |
++---------------------------+-----------------------+-----------------------+
+|Definition of new          |Single declarative     |Function definition and|
+|syntax checkers            |function/macro         |various variables [#]_ |
++---------------------------+-----------------------+-----------------------+
+|`Error levels`_            |errors, warnings,      |errors, warnings,      |
+|                           |infos, custom levels   |notes, custom levels   |
+|                           |                       |                       |
++---------------------------+-----------------------+-----------------------+
+|`Error identifiers`_       |yes                    |no                     |
++---------------------------+-----------------------+-----------------------+
+|`Error parsing`_           |Can use arbitrary      |Can use arbitrary      |
+|                           |functions.  Helpers for|parsing functions.  No |
+|                           |regexp, JSON and XML.  |helpers provided.      |
++---------------------------+-----------------------+-----------------------+
+|Error highlighting in      |yes                    |yes                    |
+|buffers                    |                       |                       |
++---------------------------+-----------------------+-----------------------+
+|Fringe icons for errors    |yes                    |yes (Emacs 24.1+)      |
++---------------------------+-----------------------+-----------------------+
+|`Error message display`_   |Tooltip, echo area,    |Tooltip only [#]_      |
+|                           |fully customizable     |                       |
++---------------------------+-----------------------+-----------------------+
+|List of all errors         |yes                    |yes                    |
++---------------------------+-----------------------+-----------------------+
+|`Resource consumption`_    |low                    |high                   |
++---------------------------+-----------------------+-----------------------+
+|`Unit tests`_              |all syntax checkers,   |none?                  |
+|                           |large parts of         |                       |
+|                           |internals              |                       |
++---------------------------+-----------------------+-----------------------+
 
 Detailed review
 ===============
@@ -131,42 +121,25 @@ explicit agreement that your contributions will be under the GPL.
 Enabling syntax checking
 ------------------------
 
-**Flymake** is not enabled automatically for supported languages.  It must be be
-enabled for each mode individually and **carefully**, because it does not deal
-well with unavailable syntax checker tools.  In a GUI frame, it signals errors
-in GUI dialogs.  In a TTY frame, it does not signal any error at all, but
-instead silently hangs.  The same occurs when a syntax checker tool becomes
-unavailable after Flymake Mode is enabled (for instance, because the underlying
-tool was uninstalled).
-
-.. figure:: /images/flymake-error.png
-   :align: center
-
-   Flymake showing a GUI dialog to inform that a syntax checker tool is not
-   available
-
-The third-party library flymake-easy_ provides an alternate way to enable
-Flymake Mode, which gracefully handles unavailable syntax checkers.  It does not
-check whether the tool still exists before a syntax check, though, and thus does
-still exposes above behavior when a tool becomes unavailable after the mode was
-enabled.
+**Flymake** is not enabled automatically for supported languages.  It must be
+enabled for each mode individually.
 
 **Flycheck** provides a global mode `global-flycheck-mode`, which enables syntax
-checking in every supported language.  If a syntax checking tool is not
-available Flycheck fails gracefully, does not enable syntax checking, and just
-indicates the failure in the mode line.
+checking in every supported language.
 
 Syntax checkers
 ---------------
 
-**Flymake** supports Java, Makefiles, Perl, PHP, TeX/LaTeX and XML.  Notably, it
-does *not* support Emacs Lisp.  However, there are many recipes for other
-languages on the `Flymake page`_ in the EmacsWiki and many extension packages
-for other languages in the popular ELPA archive MELPA_.
+Supported languages
+~~~~~~~~~~~~~~~~~~~
 
-**Flycheck** provides support for over 40 languages with over 70 syntax
-checkers, most of them contributed by the community.  Notably, Flycheck does
-*not* support Java and Makefiles.
+**Flymake** comes only with Emacs Lisp support.  However, it is likely that
+extension packages for other languages will be written and made available in
+MELPA_.
+
+**Flycheck** provides support for `over 50 languages <flycheck-languages>` with
+over 100 syntax checkers, most of them contributed by the community.  Notably,
+Flycheck does *not* support Java and Makefiles.
 
 .. _Flymake page: https://www.emacswiki.org/emacs/FlyMake
 .. _MELPA: http://melpa.org/
@@ -273,31 +246,21 @@ tool for each defined syntax checker and provides the interactive command
 Syntax checker selection
 ------------------------
 
-**Flymake** selects syntax checkers based on file name patterns in
-``flymake-allowed-file-name-masks``.  Effectively this duplicates the existing
-logic Emacs uses to choose the right major mode, but lacks its flexibility and
-power.  For instance, Flymake cannot pick a syntax checker based on the shebang
-of a file.
+**Flymake** selects backends based on the content of the
+`flymake-diagnostic-functions` hook.  This allows users to add backends for
+specific modes or even files.
 
-**Flycheck** uses the major mode to select a syntax checker.  This reuses the
-existing sophisticated logic Emacs uses to choose and configure major modes.
-Flycheck can easily select a Python syntax checker for a Python script without
-file extension, but with proper shebang, simply because Emacs correctly chooses
-Python Mode for such a file.
+**Flycheck** uses the major mode to select a syntax checker.  Custom predicates
+allows one to refine the selection of a checker further.
 
 Custom predicates
 ~~~~~~~~~~~~~~~~~
 
-**Flymake** does not allow for custom predicates to implement more complex logic
-for syntax checker selection.  For instance, Flymake cannot use different syntax
-checkers for buffer depending on the value of a local variable.
+**Flymake** may allow for backends to implement custom logic to decide whether
+to run the check or not.  There are no easily-defined predicate functions.
 
-However, flymake-easy_ patches Flymake to allow for custom syntax checkers per
-buffer.  This does not happen automatically though.  The user still needs to
-explicitly register a syntax checker in a major mode hook.
-
-**Flycheck** supports custom predicate function.  For instance, Emacs uses a
-single major mode for various shell script types (e.g. Bash, Zsh, POSIX Shell,
+**Flycheck** also supports custom predicate function.  For instance, Emacs uses
+a single major mode for various shell script types (e.g. Bash, Zsh, POSIX Shell,
 etc.), so Flycheck additionally uses a custom predicate to look at the value of
 the variable ``sh-shell`` in Sh Mode buffers to determine which shell to use for
 syntax checking.
@@ -305,8 +268,8 @@ syntax checking.
 Manual selection
 ~~~~~~~~~~~~~~~~
 
-**Flymake** does not provide means to manually select a specific syntax checker,
-either interactively, or via local variables.
+**Flymake** users may manually select a specific by backend by overriding the
+value of the backends list.
 
 **Flycheck** provides the local variable `flycheck-checker` to explicitly use a
 specific syntax checker for a buffer and the command `flycheck-select-checker`
@@ -315,17 +278,18 @@ to set this variable interactively.
 Multiple syntax checkers per buffer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Flymake** can only use a single syntax checker per buffer.  Effectively, the
-user can only use a single tool to check a buffer, for instance either PHP Mess
-Detector or PHP CheckStyle.  Third party extensions to Flycheck work around this
-limitation by supplying custom shell scripts to call multiple syntax checking
-tools at once.
+**Flymake** will use all the backends added to the
+`flymake-diagnostic-functions` hook to check a buffer; all backends are started
+at the same time, but errors are reported in the buffer as soon as a backend
+returns them.
 
-**Flycheck** can easily apply multiple syntax checkers per buffer.  For
-instance, Flycheck will check PHP files with PHP CLI first to find syntax
-errors, then with PHP MessDetector to additionally find idiomatic and semantic
-errors, and eventually with PHP CheckStyle to find stylistic errors.  The user
-will see all errors reported by all of these utilities in the buffer.
+**Flycheck** can also apply multiple syntax checkers per buffer, but in sequence
+rather than concurrently.  For instance, Flycheck will check PHP files with PHP
+CLI first to find syntax errors, then with PHP MessDetector to additionally find
+idiomatic and semantic errors, and eventually with PHP CheckStyle to find
+stylistic errors.  The user will see all errors reported by all of these tools
+in the buffer.  However, if the first checker reported at least one error, then
+the subsequent checkers would not be run.
 
 Errors
 ------
@@ -333,15 +297,13 @@ Errors
 Error levels
 ~~~~~~~~~~~~
 
-**Flymake** supports error and warning messages.  The pattern of warning
-messages is *hard-coded* in Emacs 24.3, and only became customizable in Emacs
-24.4.  The patterns to parse messages are kept separate from the actual syntax
-checker.
+**Flymake** supports error, warning and note levels by default.  Additional
+error levels can easily be defined by adding them to
+``flymake-diagnostic-types-alist``.
 
-**Flycheck** supports error, warning and info messages.  The patterns to parse
-messages of different levels are part of the syntax checker definition, and thus
-specific to each syntax checker.  Flycheck allows to define new error levels for
-use in custom syntax checkers with `flycheck-define-error-level`.
+**Flycheck** supports error, warning and info messages.  Flycheck allows you to
+define new error levels for use in custom syntax checkers with
+`flycheck-define-error-level`.
 
 Error identifiers
 ~~~~~~~~~~~~~~~~~
@@ -352,38 +314,23 @@ Error identifiers
 syntax checker provides these.  The identifiers appear in the error list and in
 error display, and can be copied independently, for instance for use in an
 inline suppression comment or to search the web for a particular kind of error.
+Some checkers can also provide more detailed error explanations based on these
+error identifiers.
 
 Error parsing
 ~~~~~~~~~~~~~
 
-**Flymake** parses the output of syntax checker tools with regular expressions
-only.  As it splits the output by lines regardless of the regular expressions,
-it does not support error messages spanning multiple lines (such as returned by
-the Emacs Lisp byte compiler or by the Glasgow Haskell Compiler).
-
-flymake-easy_ overrides internal Flymake functions to support multiline error
-messages.
+**Flymake** lets backend choose how they want to parse error messages from
+tools.  There are no built-in helpers for defining error patterns, or for
+parsing JSON or XML formats.
 
 **Flycheck** can use regular expressions as well as custom parsing functions.
-By means of such functions, it can parse JSON, XML or other structured output
-formats.  Flycheck includes some ready-to-use parsing functions for well-known
-output formats, such as Checkstyle XML.  By parsing structured output format,
-Flycheck can handle arbitrarily complex error messages.  With regular
-expressions it uses the error patterns to split the output into tokens and thus
-handles multiline messages just as well.
+The preferred way to define a checker is to use the ``rx`` syntax, extended with
+custom forms for readable error patterns.  Flycheck includes some ready-to-use
+parsing functions for well-known output formats, such as Checkstyle XML.
 
 Error message display
 ~~~~~~~~~~~~~~~~~~~~~
-
-.. figure:: /images/flymake-tooltip.png
-   :align: right
-
-   Flymake error message in tooltip
-
-.. figure:: /images/flycheck-tooltip-and-echo-area.png
-   :align: right
-
-   Flycheck error message in tooltip and echo area
 
 In GUI frames, **Flymake** shows error messages in a tool tip, if the user
 hovers the mouse over an error location.  It does not provide means to show
@@ -394,20 +341,8 @@ in the echo area, by overriding internal Flymake functions.
 
 **Flycheck** shows error message tool tips as well, but also displays error
 messages in the echo area, if the point is at an error location.  This feature
-is fully customizable via `flycheck-display-errors-function`.
-
-Error list
-~~~~~~~~~~
-
-**Flymake** does not provide means to list all errors in the current buffer.
-
-**Flycheck** can list all errors in the current buffer in a separate window.
-This error list is automatically updated after each syntax check, and follows
-the focus.
-
-.. figure:: /images/flycheck-error-list.png
-
-   Listing all errors in the current buffer
+is fully customizable via `flycheck-display-errors-function`, with several
+`extensions <flycheck-extensions>` already using that functionality.
 
 Resource consumption
 --------------------
@@ -459,9 +394,6 @@ required to have test cases.  A subset of the test suite is continuously run on
 
 .. [#] The 3rd party library flymake-easy_ allows to use syntax checkers per
        major mode.
-
-.. [#] Various 3rd party packages thus use custom shell scripts to call multiple
-       syntax checking tools at once.
 
 .. [#] However, the `Flymake page`_ in the EmacsWiki provides recipes for many
        other languages, although of varying quality.  Furthermore, the popular
