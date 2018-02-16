@@ -1118,8 +1118,6 @@ Otherwise this function creates a temporary file with
 `flycheck-temp-prefix' and a random suffix.  The path of the file
 is added to `flycheck-temporaries'.
 
-Add the path of the file to `flycheck-temporaries'.
-
 Return the path of the file."
   (let ((tempfile (convert-standard-filename
                    (if filename
@@ -1148,6 +1146,20 @@ Return the path of the file."
         (push tempfile flycheck-temporaries)
         tempfile)
     (flycheck-temp-file-system filename)))
+
+(defun flycheck-temp-files-writable-p (checker)
+  "Whether CHECKER can write temporary files.
+
+If CHECKER has `source' or `source-inplace' in its `:command',
+return whether flycheck has the permissions to create the
+respective temporary files.
+
+Return t if CHECKER does not use temporary files."
+  (let ((args (flycheck-checker-arguments checker)))
+    (and (or (not (memq 'source args))
+             (file-writable-p (flycheck-temp-file-system buffer-file-name)))
+         (or (not (memq 'source-inplace args))
+             (file-writable-p (flycheck-temp-file-inplace buffer-file-name))))))
 
 (defun flycheck-save-buffer-to-file (file-name)
   "Save the contents of the current buffer to FILE-NAME."
@@ -4666,6 +4678,7 @@ default `:verify' function of command checkers."
           (plist-put properties :enabled
                      (lambda ()
                        (and (flycheck-find-checker-executable symbol)
+                            (flycheck-temp-files-writable-p symbol)
                             (or (not enabled) (funcall enabled))))))
 
     (apply #'flycheck-define-generic-checker symbol docstring
@@ -5071,7 +5084,12 @@ CHECKER."
             (list (flycheck-verification-result-new
                    :label "configuration file"
                    :message (if path (format "Found at %S" path) "Not found")
-                   :face (if path 'success 'warning))))))))
+                   :face (if path 'success 'warning)))))
+      ,@(when (not (flycheck-temp-files-writable-p checker))
+          (list (flycheck-verification-result-new
+                 :label "directory"
+                 :message "is not writable"
+                 :face 'error))))))
 
 
 ;;; Process management for command syntax checkers
