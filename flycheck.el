@@ -7735,19 +7735,9 @@ Requires Go 1.6 or newer. See URL
   "A groovy syntax checker using groovy compiler API.
 
 See URL `http://www.groovy-lang.org'."
-  :command ("groovy" "-e"
-            "import org.codehaus.groovy.control.*
-
-file = new File(args[0])
-unit = new CompilationUnit()
-unit.addSource(file)
-
-try {
-    unit.compile(Phases.CONVERSION)
-} catch (MultipleCompilationErrorsException e) {
-    e.errorCollector.write(new PrintWriter(System.out, true), null)
-}
-"
+  :command ("groovyc"
+            "--temp" temporary-directory
+            "-d" temporary-directory
             source)
   :error-patterns
   ((error line-start (file-name) ": " line ":" (message)
